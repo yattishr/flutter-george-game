@@ -3,30 +3,28 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/material.dart';
 
 import 'button_controller.dart';
+import 'constants.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-      MaterialApp(
-          home:
-          Scaffold(
-              body: GameWidget(
-                game: MyGeorgeGame(),
-                overlayBuilderMap: {
-                  'ButtonController': (BuildContext context, MyGeorgeGame game) {
-                    return ButtonController(game: game);
-                  }
-                },
-              )
-          )
-      )
-  );
+  runApp(MaterialApp(
+      home: Scaffold(
+          body: GameWidget(
+    game: MyGeorgeGame(),
+    overlayBuilderMap: {
+      'ButtonController': (BuildContext context, MyGeorgeGame game) {
+        return ButtonController(game: game);
+      }
+    },
+  ))));
 }
 
-class MyGeorgeGame extends FlameGame with TapDetector {
+class MyGeorgeGame extends FlameGame
+    with TapDetector, HasCollisionDetection, KeyboardHandler {
   late SpriteAnimation upAnimation;
   late SpriteAnimation downAnimation;
   late SpriteAnimation leftAnimation;
@@ -34,26 +32,33 @@ class MyGeorgeGame extends FlameGame with TapDetector {
   late SpriteAnimation idleAnimation;
   late SpriteAnimationComponent george;
   late SpriteAnimationComponent player;
-  late SpriteComponent background;
+  late double mapWidth;
+  late double mapHeight;
 
   // 0 = idle, 1 = down, 2 = left
   int direction = 0;
-  final double animationSpeed = 0.1;
-  final double characterSize = 100;
-  final double worldCoordinates = 0.1;
-  final double characterSpeed = 80;
   String soundTrackName = 'smiley';
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // load background
-    Sprite backgroundSprite = await loadSprite('background.png');
-    background = SpriteComponent()
-      ..sprite = backgroundSprite
-      ..size=backgroundSprite.originalSize;
-    add(background);
+    // define home map
+    final homeMap = await TiledComponent.load('map.tmx', Vector2.all(16));
+
+    // define the world
+    final world = World(children: [homeMap]);
+    await add(world);
+
+    mapWidth = homeMap.tileMap.map.width * 16.0;
+    mapHeight = homeMap.tileMap.map.height * 16.0;
+
+    final camera = CameraComponent.withFixedResolution(
+        world: world, width: 320, height: 640);
+    await add(camera);
+
+    camera.moveTo(
+        Vector2(homeMap.size.x * 0.5, camera.viewport.virtualSize.y * 0.5));
 
     // add background audio
     FlameAudio.bgm.initialize();
@@ -76,7 +81,9 @@ class MyGeorgeGame extends FlameGame with TapDetector {
     player = SpriteAnimationComponent()
       ..animation = idleAnimation
       ..position = Vector2(100, 200)
-      ..size = Vector2.all(characterSize);
+      ..size = Vector2.all(characterSize)
+      ..priority = 1
+      ..anchor = Anchor.center;
 
     // add player sprite :-)
     add(player);
@@ -86,41 +93,36 @@ class MyGeorgeGame extends FlameGame with TapDetector {
   }
 
   @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-  }
-
-  @override
   void update(double dt) {
     super.update(dt);
 
-    switch(direction) {
+    switch (direction) {
       case 0:
         player.animation = idleAnimation;
         break;
       case 1:
         player.animation = downAnimation;
-        if (player.y < background.size.y - player.height) {
+        if (player.y < mapHeight - player.height) {
           player.y += dt * characterSpeed;
-        }        
+        }
         break;
       case 2:
         player.animation = leftAnimation;
         if (player.x > 0) {
           player.x -= dt * characterSpeed;
-        }        
+        }
         break;
       case 3:
         player.animation = upAnimation;
         if (player.y > 0) {
           player.y -= dt * characterSpeed;
-        }        
+        }
         break;
       case 4:
         player.animation = rightAnimation;
-        if(player.x < background.size.x - player.width) {
+        if (player.x < mapWidth - player.width) {
           player.x += dt * characterSpeed;
-        }        
+        }
         break;
       default:
         player.animation = idleAnimation;

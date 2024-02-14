@@ -1,4 +1,4 @@
-# flutter_animate_leena
+# flutter-george-game
 
 A new Flutter project.
 
