@@ -1,4 +1,4 @@
-name: flutter_animate_leena
+name: flutter_my_george_game
 description: "A Flutter game built with Flame."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -26,6 +26,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  assets_gen: ^1.5.0
 
 # The following section is specific to Flutter packages.
 flutter:

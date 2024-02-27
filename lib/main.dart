@@ -1,3 +1,5 @@
+// import 'package:flame/camera.dart';
+import 'package:flutter/services.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -30,13 +32,11 @@ class MyGeorgeGame extends FlameGame
   late SpriteAnimation leftAnimation;
   late SpriteAnimation rightAnimation;
   late SpriteAnimation idleAnimation;
-  late SpriteAnimationComponent george;
   late SpriteAnimationComponent player;
   late double mapWidth;
   late double mapHeight;
-
-  // 0 = idle, 1 = down, 2 = left
-  int direction = 0;
+  Vector2 movement = Vector2.zero();
+  
   String soundTrackName = 'smiley';
 
   @override
@@ -48,21 +48,27 @@ class MyGeorgeGame extends FlameGame
 
     // define the world
     final world = World(children: [homeMap]);
-    await add(world);
+
+    // experimenting with the variables below:
+    Vector2 movement = Vector2.zero();
 
     mapWidth = homeMap.tileMap.map.width * 16.0;
     mapHeight = homeMap.tileMap.map.height * 16.0;
 
-    final camera = CameraComponent.withFixedResolution(
-        world: world, width: 320, height: 640);
-    await add(camera);
+    print(mapWidth);
+    print(mapHeight);
 
-    camera.moveTo(
-        Vector2(homeMap.size.x * 0.5, camera.viewport.virtualSize.y * 0.5));
+    final camera = CameraComponent.withFixedResolution(
+      world: world, width: 160, height: 320);  
+    
+    camera.priority = 1;
+
+    // Move the camera to center of the map
+    camera.moveTo(Vector2(mapWidth * 0.5, mapHeight * 0.5));
 
     // add background audio
     FlameAudio.bgm.initialize();
-    FlameAudio.audioCache.load('music.mp3');
+    FlameAudio.audioCache.load('smile.mp3');
 
     // add button overlay to toggle music.
     overlays.add('ButtonController');
@@ -82,11 +88,12 @@ class MyGeorgeGame extends FlameGame
       ..animation = idleAnimation
       ..position = Vector2(100, 200)
       ..size = Vector2.all(characterSize)
-      ..priority = 1
+      ..priority = 2
+      ..debugMode = true
       ..anchor = Anchor.center;
 
-    // add player sprite :-)
-    add(player);
+    // add all components.
+    addAll([camera, world, player]);
 
     // camera set up.
     camera.follow(player);
@@ -96,6 +103,7 @@ class MyGeorgeGame extends FlameGame
   void update(double dt) {
     super.update(dt);
 
+    // direction:  0 = idle, 1 = down, 2 = left, 3 = up, 4 = right
     switch (direction) {
       case 0:
         player.animation = idleAnimation;
@@ -133,6 +141,7 @@ class MyGeorgeGame extends FlameGame
   void onTapUp(TapUpInfo info) {
     print('Tap event detected');
     direction += 1;
+    print('direction is: $direction');
 
     // check if direction exceeds 4, reset direction to zero.
     if (direction > 4) {

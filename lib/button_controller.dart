@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flutter_animate_leena/main.dart';
+import 'package:flutter_my_george_game/main.dart';
 
 class ButtonController extends StatelessWidget {
   final MyGeorgeGame game;
@@ -27,7 +27,7 @@ class ButtonController extends StatelessWidget {
         },
       ),
       Text(
-        game.soundTrackName,
+        'Some Text',
         style: TextStyle(color: Colors.yellow.shade200, fontSize: 20)
       )
     ]);
