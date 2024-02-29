@@ -9,13 +9,13 @@ import '../constants.dart';
 
 class MyGeorgeGame extends FlameGame
     with TapDetector, HasCollisionDetection, KeyboardHandler {
+
   late SpriteAnimation upAnimation;
   late SpriteAnimation downAnimation;
   late SpriteAnimation leftAnimation;
   late SpriteAnimation rightAnimation;
   late SpriteAnimation idleAnimation;
   late SpriteAnimationComponent player;
-  late double mapWidth;
   late double mapHeight;
   Vector2 movement = Vector2.zero();
   
@@ -23,31 +23,23 @@ class MyGeorgeGame extends FlameGame
 
   @override
   Future<void> onLoad() async {
-    await super.onLoad();
-
+    super.onLoad();
+    
     // define home map
     final homeMap = await TiledComponent.load('map.tmx', Vector2.all(16));
 
     // define the world
     final world = World(children: [homeMap]);
 
-    // experimenting with the variables below:
-    Vector2 movement = Vector2.zero();
-
-    mapWidth = homeMap.tileMap.map.width * 16.0;
-    mapHeight = homeMap.tileMap.map.height * 16.0;
-
-    print(mapWidth);
-    print(mapHeight);
-
     final camera = CameraComponent.withFixedResolution(
-      world: world, width: 160, height: 320);  
-    
+      world: world, width: gameWidth, height: gameHeight);  
+        
     camera.priority = 1;
 
-    // Move the camera to center of the map
-    camera.moveTo(Vector2(mapWidth * 0.5, mapHeight * 0.5));
-
+    camera.viewfinder
+    ..anchor = Anchor.topLeft
+    ..zoom = 4.0;
+        
     // add background audio
     FlameAudio.bgm.initialize();
     FlameAudio.audioCache.load('littleidea.mp3');
@@ -75,7 +67,7 @@ class MyGeorgeGame extends FlameGame
       ..anchor = Anchor.center;
 
     // add all components.
-    addAll([camera, world, player]);
+    addAll([world, camera, player]);
 
     // camera set up.
     camera.follow(player);
@@ -92,7 +84,7 @@ class MyGeorgeGame extends FlameGame
         break;
       case 1:
         player.animation = downAnimation;
-        if (player.y < mapHeight - player.height) {
+        if (player.y < gameHeight - player.height) {
           player.y += dt * characterSpeed;
         }
         break;
@@ -110,11 +102,7 @@ class MyGeorgeGame extends FlameGame
         break;
       case 4:
         player.animation = rightAnimation;
-        print('player.x value:');
-        print(player.x);
-        print('map Width:');
-        print(mapWidth);
-        if (player.x < mapWidth - player.width) {
+        if (player.x < gameWidth - (player.width + 10)) {
           player.x += dt * characterSpeed;
         }
         break;

@@ -5,7 +5,6 @@ import 'package:flutter_my_george_game/game/game_component.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  final game = MyGeorgeGame();
   runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
