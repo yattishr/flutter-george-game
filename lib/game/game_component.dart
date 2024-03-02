@@ -1,4 +1,5 @@
 // import 'package:flame/camera.dart';
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -6,6 +7,7 @@ import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import '../constants.dart';
+import '../characters/friendComponent.dart';
 
 class MyGeorgeGame extends FlameGame
     with TapDetector, HasCollisionDetection, KeyboardHandler {
@@ -15,8 +17,8 @@ class MyGeorgeGame extends FlameGame
   late SpriteAnimation leftAnimation;
   late SpriteAnimation rightAnimation;
   late SpriteAnimation idleAnimation;
-  late SpriteAnimationComponent player;
-  late double mapHeight;
+  late GeorgeComponent player;
+  late SpriteComponent friend;
   Vector2 movement = Vector2.zero();
   
   String soundTrackName = 'smiley';
@@ -31,9 +33,21 @@ class MyGeorgeGame extends FlameGame
     // define the world
     final world = World(children: [homeMap]);
 
+    // loop through Friend Objects
+    final friendsGroup = homeMap.tileMap.getLayer<ObjectGroup>('Friends');
+    print('displaying friendsGroup: $friendsGroup');
+    for (var friendBox in friendsGroup?.objects ?? []) {
+      add(FriendComponent()
+      ..position=Vector2(friendBox.x, friendBox.y)
+      ..width=friendBox.width
+      ..height = friendBox.height
+      ..debugMode = true
+      );
+    }
+
     final camera = CameraComponent.withFixedResolution(
-      world: world, width: gameWidth, height: gameHeight);  
-        
+      world: world, width: gameWidth, height: gameHeight);
+
     camera.priority = 1;
 
     camera.viewfinder
@@ -58,7 +72,7 @@ class MyGeorgeGame extends FlameGame
     idleAnimation = spriteSheet.createAnimation(row: 0, stepTime: 0.5, to: 1);
 
     // create sprite animation component
-    player = SpriteAnimationComponent()
+    player = GeorgeComponent()
       ..animation = idleAnimation
       ..position = Vector2(100, 200)
       ..size = Vector2.all(characterSize)
@@ -103,7 +117,7 @@ class MyGeorgeGame extends FlameGame
       case 4:
         player.animation = rightAnimation;
         if (player.x < gameWidth - (player.width + 10)) {
-          player.x += dt * characterSpeed;
+          player.x += dt * (characterSpeed - 10);
         }
         break;
       default:
@@ -121,5 +135,20 @@ class MyGeorgeGame extends FlameGame
     if (direction > 4) {
       direction = 0;
     }
+  }
+}
+
+// class FriendComponent extends PositionComponent with HasCollisionDetection, HasGameReference<MyGeorgeGame> {
+//   FriendComponent() {
+//     add(RectangleHitbox());
+//     void onCollisionStart() {
+//       print('Collision detected!');      
+//     }
+//   }
+// }
+
+class GeorgeComponent extends SpriteAnimationComponent with HasCollisionDetection {
+  GeorgeComponent() {
+    add(RectangleHitbox());
   }
 }
