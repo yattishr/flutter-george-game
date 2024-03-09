@@ -29,7 +29,7 @@ class MainMenuScreen extends StatelessWidget {
           child: Transform.rotate(
             angle: -0.1,
             child: const Text(
-              'Play George \n The Green Warrior \n\n 🌍', 
+              'Play George \n The Green Guardian \n\n 🌍',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Permanent Marker',

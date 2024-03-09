@@ -1,11 +1,9 @@
-import 'package:basic/play_chicken/play_chicken_screen.dart';
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
-import 'package:flame_audio/flame_audio.dart';
-import 'package:flame_tiled/flame_tiled.dart';
+import 'package:flutter/material.dart';
+
 import '../constants.dart';
 
 class IntroGeorgeGame extends FlameGame
@@ -35,19 +33,16 @@ class IntroGeorgeGame extends FlameGame
     );
 
     // sprite animations
-    downAnimation = spriteSheet.createAnimation(row: 0, stepTime: 0.5, to: 4);
-    leftAnimation = spriteSheet.createAnimation(row: 1, stepTime: 0.5, to: 4);
-    upAnimation = spriteSheet.createAnimation(row: 2, stepTime: 0.5, to: 4);
     rightAnimation = spriteSheet.createAnimation(row: 3, stepTime: 0.5, to: 4);
-    idleAnimation = spriteSheet.createAnimation(row: 0, stepTime: 0.5, to: 1);
 
     // create sprite animation component
     player = SpriteAnimationComponent()
       ..animation = rightAnimation
-      ..position = Vector2(150, 350)
+      ..position = Vector2(150, 200)
       ..size = Vector2.all(characterSize)
       ..priority = 2
       ..debugMode = true
+      ..debugColor = Colors.amber
       ..anchor = Anchor.center;
 
     // add all components.
