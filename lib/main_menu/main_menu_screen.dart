@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
@@ -42,13 +43,14 @@ class MainMenuScreen extends StatelessWidget {
         rectangularMenuArea: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            MyButton(
-              onPressed: () {
-                audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/george');
-              },
-              child: const Text('Lets Play!'),
-            ),
+            // MyButton(
+            //   onPressed: () {
+            //     audioController.playSfx(SfxType.buttonTap);
+            //     GoRouter.of(context).go('/george');
+            //   },
+            //   child: const Text('Lets Play!'),
+            // ),
+            // _gap,
             MyButton(
               onPressed: () {
                 audioController.playSfx(SfxType.buttonTap);

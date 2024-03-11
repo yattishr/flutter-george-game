@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../audio/audio_controller.dart';
 import 'intro_george_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../style/palette.dart';
 import '../settings/settings.dart';
@@ -33,7 +32,7 @@ class IntroController extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "George, the Green Guardian, lives in a charming village, Whispering Pines.",
+                AppLocalizations.of(context)!.introStoryLine1,
                 style: TextStyle(
                   color: Colors.yellow.shade200,
                   fontSize: 20,
@@ -42,7 +41,7 @@ class IntroController extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                "But lately, litterbugs have made a mess! George can't stand it!",
+                AppLocalizations.of(context)!.introStoryLine2,
                 style: TextStyle(
                   color: Colors.yellow.shade200,
                   fontSize: 20,
@@ -54,12 +53,12 @@ class IntroController extends StatelessWidget {
                 onPressed: () {
                   GoRouter.of(context).go('/george');
                 },
-                child: Text('Help George Clean Up!'),
                 style: ElevatedButton.styleFrom(
                   primary: Colors.green,
                   onPrimary: Colors.white,
                   textStyle: TextStyle(fontSize: 20),
                 ),
+                child: Text(AppLocalizations.of(context)!.helpGeorgeButtonText),
               ),
             ],
           ),

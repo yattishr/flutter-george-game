@@ -1,0 +1,15 @@
+{
+  "@@locale": "ja",
+  "gameTitleLine1": "ジョージで遊ぼう",
+  "gameTitleLine2": "緑の守り人",
+  "gameButton1": "ジョージはどうする",
+  "gameButton2": "設定",
+  "settingsTitle": "設定",
+  "settingsName": "名前",
+  "settingsSoundFX": "効果音",
+  "settingsMusic": "音楽",
+  "settingsResetProgress": "進捗をリセット",
+  "introStoryLine1": "ジョージ, 緑の守護神は、魅力的な村「ウィスパリングパインズ」に住んでいます。",
+  "introStoryLine2": "でも最近、ポイ捨てする人がゴミで汚してしまいました！ジョージは我慢できません！",
+  "helpGeorgeButtonText": "ジョージと一緒に片付けよう！"
+}

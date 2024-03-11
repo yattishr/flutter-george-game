@@ -27,6 +27,7 @@ class MyGeorgeGame extends FlameGame
   Future<void> onLoad() async {
     super.onLoad();
 
+    // added chicken component here to test collision detection later.
     final playChickenScreen = PlayChickenScreen();
     await playChickenScreen.loadChicken();
 
@@ -58,16 +59,11 @@ class MyGeorgeGame extends FlameGame
     // add button overlay to toggle music.
     overlays.add('ButtonController');
 
-    // player spritesheet.
+    // player sprite sheet.
     final spriteSheet = SpriteSheet(
       image: await images.load('player.png'),
       srcSize: Vector2(48, 48),
     );
-
-    // final spriteSheetChicken = SpriteSheet(
-    //   image: await images.load('chicken_run.png'),
-    //   srcSize: Vector2(32, 34),
-    // );
 
     // sprite animations
     downAnimation = spriteSheet.createAnimation(row: 0, stepTime: 0.5, to: 4);
@@ -75,10 +71,6 @@ class MyGeorgeGame extends FlameGame
     upAnimation = spriteSheet.createAnimation(row: 2, stepTime: 0.5, to: 4);
     rightAnimation = spriteSheet.createAnimation(row: 3, stepTime: 0.5, to: 4);
     idleAnimation = spriteSheet.createAnimation(row: 0, stepTime: 0.5, to: 1);
-
-    // chicken animations
-    // idleChickenAnimation =
-    //     spriteSheetChicken.createAnimation(row: 0, stepTime: 0.1, to: 1);
 
     // create sprite animation component
     player = GeorgeComponent()
@@ -89,21 +81,8 @@ class MyGeorgeGame extends FlameGame
       ..debugMode = true
       ..anchor = Anchor.center;
 
-    // Instantiate PlayChickenScreen to access its ChickenComponent
-    // final playChickenScreen = PlayChickenScreen();
-    // chicken = playChickenScreen.chicken;
-
-    // create the chicken animation
-    // chicken = ChickenComponent()
-    //   // ..animation = idleChickenAnimation
-    //   ..position = Vector2(100, 100)
-    //   ..size = Vector2(64, 68)
-    //   ..debugMode = true
-    //   ..debugColor = Colors.amber
-    //   ..priority = 2;
-
     // add all components.
-    addAll([world, camera, player, chicken]);
+    addAll([world, camera, player]);
 
     // camera set up.
     camera.follow(player);
@@ -168,7 +147,7 @@ class GeorgeComponent extends SpriteAnimationComponent
 
   @override
   void onCollision(Set<Component> otherComponents) {
-    
+
       if (otherComponents is ChickenComponent) {
         print("Collision with cluck cluck!");
         // Handle collision logic here
@@ -183,10 +162,10 @@ class ChickenComponent extends PositionComponent
   }
 
   @override
-  void onCollision(Set<Component> otherComponents) {    
+  void onCollision(Set<Component> otherComponents) {
       if (otherComponents is GeorgeComponent) {
         print("Collision with player!");
         // Handle collision logic here
-      }    
+      }
   }
 }

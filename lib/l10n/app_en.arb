@@ -1,0 +1,15 @@
+{
+  "@@locale": "en",
+  "gameTitleLine1": "Play George",
+  "gameTitleLine2": "The Green Guardian",
+  "gameButton1": "What about George?",
+  "gameButton2": "Settings",
+  "settingsTitle": "Settings",
+  "settingsName": "PLAYER",
+  "settingsSoundFX": "Sound FX",
+  "settingsMusic": "Music",
+  "settingsResetProgress": "Reset Progress",
+  "introStoryLine1": "George, the Green Guardian, lives in a charming village, Whispering Pines.",
+  "introStoryLine2": "But lately, litterbugs have made a mess! George can't stand it!",
+  "helpGeorgeButtonText": "Help George Clean Up!"
+}

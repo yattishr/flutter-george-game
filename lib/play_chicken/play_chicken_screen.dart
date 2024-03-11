@@ -25,7 +25,7 @@ class PlayChickenScreen extends FlameGame {
     // 3. Create the animation
     chicken =
         SpriteAnimationComponent.fromFrameData(spriteSheet, animationData)
-        ..position = Vector2(100, 100)
+        ..position = Vector2(150, 200)
         ..size = Vector2(64, 68)
         ..debugMode = true
         ..debugColor = Colors.amber
