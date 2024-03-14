@@ -5,9 +5,9 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flame_tiled/flame_tiled.dart';
 import '../constants.dart';
 import 'package:basic/play_chicken/play_chicken_screen.dart';
+import 'package:basic/homeMap/homemap_world.dart';
 
 class MyGeorgeGame extends FlameGame
     with TapDetector, HasCollisionDetection {
@@ -23,21 +23,26 @@ class MyGeorgeGame extends FlameGame
 
   String soundTrackName = 'smiley';
 
+  // Create an instance of HomeMapWorld
+  final homeMapWorld = HomeMapWorld();
+
+
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    // Load the home map world
+    await homeMapWorld.onLoad();    
+
+    // Get the world from HomeMapWorld
+    final world = homeMapWorld.getWorld();
 
     // added chicken component here to test collision detection later.
     final playChickenScreen = PlayChickenScreen();
     await playChickenScreen.loadChicken();
 
     chicken = playChickenScreen.chicken;
-
-    // define home map
-    final homeMap = await TiledComponent.load('map.tmx', Vector2.all(16));
-
-    // define the world
-    final world = World(children: [homeMap]);
 
     final camera = CameraComponent.withFixedResolution(
       world: world,

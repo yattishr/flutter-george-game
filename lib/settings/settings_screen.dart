@@ -30,8 +30,8 @@ class SettingsScreen extends StatelessWidget {
         squarishMainArea: ListView(
           children: [
             _gap,
-            const Text(
-              'Settings',
+            Text(
+              AppLocalizations.of(context)!.settingsTitle,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Permanent Marker',
@@ -46,7 +46,7 @@ class SettingsScreen extends StatelessWidget {
             ValueListenableBuilder<bool>(
               valueListenable: settings.soundsOn,
               builder: (context, soundsOn, child) => _SettingsLine(
-                'Sound FX',
+                AppLocalizations.of(context)!.settingsSoundFX,
                 Icon(soundsOn ? Icons.graphic_eq : Icons.volume_off),
                 onSelected: () => settings.toggleSoundsOn(),
               ),
@@ -54,13 +54,13 @@ class SettingsScreen extends StatelessWidget {
             ValueListenableBuilder<bool>(
               valueListenable: settings.musicOn,
               builder: (context, musicOn, child) => _SettingsLine(
-                'Music',
+                AppLocalizations.of(context)!.settingsMusic,
                 Icon(musicOn ? Icons.music_note : Icons.music_off),
                 onSelected: () => settings.toggleMusicOn(),
               ),
             ),
             _SettingsLine(
-              'Reset progress',
+              AppLocalizations.of(context)!.settingsResetProgress,
               const Icon(Icons.delete),
               onSelected: () {
                 context.read<PlayerProgress>().reset();

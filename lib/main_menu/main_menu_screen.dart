@@ -56,12 +56,12 @@ class MainMenuScreen extends StatelessWidget {
                 audioController.playSfx(SfxType.buttonTap);
                 GoRouter.of(context).go('/intro');
               },
-              child: const Text('What About George?'),
+              child: Text(AppLocalizations.of(context)!.gameButton1),
             ),
             _gap,
             MyButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
-              child: const Text('Settings'),
+              child: Text(AppLocalizations.of(context)!.gameButton2),
             ),
             _gap,
             Padding(
